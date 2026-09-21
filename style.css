@@ -1,0 +1,111 @@
+/* Theme colors live in variables. The default (no anime chosen yet) is a
+   plain gray-and-white look. Each theme class below replaces these values. */
+:root {
+  --page-bg: #f5f5f5;
+  --title-color: #333;
+  --heading-color: #444;
+  --accent: #333;
+  --card-bg: white;
+  --card-text: #222;
+  --button-bg: #e0e0e0;
+  --button-text: #222;
+  --active-bg: #333;
+  --active-text: white;
+}
+
+/* Naruto theme: orange, dark gray/black, cream, red accents. */
+body.theme-naruto {
+  --page-bg: linear-gradient(160deg, #1f1f1f 0%, #3a3a3a 35%, #ff8c1a 100%);
+  --title-color: #ff8c1a;
+  --heading-color: #fff3d6;
+  --accent: #d62828;
+  --card-bg: #fff3d6;
+  --card-text: #2b2b2b;
+  --button-bg: #3a3a3a;
+  --button-text: #fff3d6;
+  --active-bg: #ff8c1a;
+  --active-text: #1f1f1f;
+}
+
+/* One Piece theme: deep ocean blue, teal, cream/parchment, gold. */
+body.theme-one-piece {
+  --page-bg: linear-gradient(180deg, #0b3d5c 0%, #0f5f78 50%, #1fa3a3 100%);
+  --title-color: #f2c14e;
+  --heading-color: #f6ecd2;
+  --accent: #8b5a2b;
+  --card-bg: #f6ecd2;
+  --card-text: #3b2a14;
+  --button-bg: #1fa3a3;
+  --button-text: #06263a;
+  --active-bg: #f2c14e;
+  --active-text: #06263a;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 40px 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--page-bg);
+}
+
+h1 {
+  color: var(--title-color);
+}
+
+h2 {
+  margin-top: 40px;
+  color: var(--heading-color);
+}
+
+.anime-button {
+  margin: 30px 8px 0;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+}
+
+/* The button of the currently selected anime. */
+.anime-button.active {
+  background-color: var(--active-bg);
+  color: var(--active-text);
+  font-weight: bold;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.character-card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 20px;
+  width: 250px;
+  text-align: left;
+}
+
+.character-card h3 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+/* On narrow screens (like a phone), let each card take the full width
+   instead of being squeezed to fit side-by-side. */
+@media (max-width: 600px) {
+  .character-card {
+    width: 100%;
+  }
+}
