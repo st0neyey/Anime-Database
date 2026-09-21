@@ -1,16 +1,17 @@
 /* Theme colors live in variables. The default (no anime chosen yet) is a
-   plain gray-and-white look. Each theme class below replaces these values. */
+   deep indigo look with gold highlights. Each theme class below replaces
+   these values. */
 :root {
-  --page-bg: #f5f5f5;
-  --title-color: #333;
-  --heading-color: #444;
-  --accent: #333;
-  --card-bg: white;
-  --card-text: #222;
-  --button-bg: #e0e0e0;
-  --button-text: #222;
-  --active-bg: #333;
-  --active-text: white;
+  --page-bg: linear-gradient(160deg, #1e1b4b 0%, #4338ca 100%);
+  --title-color: #f8fafc;
+  --heading-color: #e0e7ff;
+  --accent: #4f46e5;
+  --card-bg: #f8fafc;
+  --card-text: #1e1b4b;
+  --button-bg: #e0e7ff;
+  --button-text: #1e1b4b;
+  --active-bg: #fbbf24;
+  --active-text: #1e1b4b;
 }
 
 /* Naruto theme: orange, dark gray/black, cream, red accents. */
@@ -70,6 +71,12 @@ h2 {
   color: var(--button-text);
   border: 2px solid var(--accent);
   border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, filter 0.2s;
+}
+
+/* Slightly brighten a button while the mouse is over it. */
+.anime-button:hover {
+  filter: brightness(1.1);
 }
 
 /* The button of the currently selected anime. */
