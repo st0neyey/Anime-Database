@@ -26,9 +26,13 @@ function createCharacterCard(character) {
   const description = document.createElement("p");
   description.textContent = character.description;
 
+  const powers = document.createElement("p");
+  powers.textContent = "Powers: " + character.powers;
+
   card.appendChild(name);
   card.appendChild(anime);
   card.appendChild(description);
+  card.appendChild(powers);
 
   return card;
 }
