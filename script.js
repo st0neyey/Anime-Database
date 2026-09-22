@@ -6,6 +6,11 @@ const onePieceButton = document.getElementById("one-piece-button");
 
 const animeHeading = document.getElementById("anime-heading");
 const cardContainer = document.getElementById("card-container");
+const searchInput = document.getElementById("character-search");
+
+// Tracks which anime is currently selected, so the search box knows which
+// character list to filter. Starts as null (nothing selected yet).
+let currentAnimeName = null;
 
 // Build one character card element from a character's data.
 function createCharacterCard(character) {
@@ -42,15 +47,32 @@ function showAnime(animeName, themeClass, activeButton) {
   onePieceButton.classList.remove("active");
   activeButton.classList.add("active");
 
-  // 4. Remove any cards from the previous anime.
+  // 4. Remember the selection and clear any previous search text.
+  currentAnimeName = animeName;
+  searchInput.value = "";
+
+  // 5. Show every character of the chosen anime (no search filter yet).
+  renderCards("");
+}
+
+// Show only the characters of the current anime whose name contains
+// searchText (case-insensitive). Called on anime selection and on typing.
+function renderCards(searchText) {
   cardContainer.textContent = "";
 
-  // 5. Build and add a card for each character of the chosen anime.
+  if (currentAnimeName === null) {
+    return;
+  }
+
+  const lowerSearchText = searchText.toLowerCase();
+
   animeList.forEach(function (anime) {
-    if (anime.name === animeName) {
+    if (anime.name === currentAnimeName) {
       anime.characters.forEach(function (character) {
-        const card = createCharacterCard(character);
-        cardContainer.appendChild(card);
+        if (character.name.toLowerCase().includes(lowerSearchText)) {
+          const card = createCharacterCard(character);
+          cardContainer.appendChild(card);
+        }
       });
     }
   });
@@ -62,4 +84,9 @@ narutoButton.addEventListener("click", function () {
 
 onePieceButton.addEventListener("click", function () {
   showAnime("One Piece", "theme-one-piece", onePieceButton);
+});
+
+// Re-filter the visible cards every time the search box's text changes.
+searchInput.addEventListener("input", function () {
+  renderCards(searchInput.value);
 });
