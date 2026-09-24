@@ -12,6 +12,40 @@ const searchInput = document.getElementById("character-search");
 // character list to filter. Starts as null (nothing selected yet).
 let currentAnimeName = null;
 
+// The name localStorage will save the favorites list under.
+const FAVORITES_KEY = "animeDatabaseFavorites";
+
+// Read the saved favorites list from localStorage. localStorage only holds
+// text, so JSON.parse turns that text back into a real array. If nothing
+// has been saved yet, start with an empty list instead.
+let favoriteCharacters = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
+
+// A simple way to identify one character uniquely: its anime plus its name.
+function getCharacterId(character) {
+  return character.anime + "::" + character.name;
+}
+
+function isFavorite(character) {
+  return favoriteCharacters.includes(getCharacterId(character));
+}
+
+// Add or remove a character from the favorites list, then save the updated
+// list back to localStorage. JSON.stringify turns the array into text,
+// since localStorage can only store text.
+function toggleFavorite(character) {
+  const id = getCharacterId(character);
+
+  if (favoriteCharacters.includes(id)) {
+    favoriteCharacters = favoriteCharacters.filter(function (favoriteId) {
+      return favoriteId !== id;
+    });
+  } else {
+    favoriteCharacters.push(id);
+  }
+
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favoriteCharacters));
+}
+
 // Build one character card element from a character's data.
 function createCharacterCard(character) {
   const card = document.createElement("div");
@@ -29,10 +63,19 @@ function createCharacterCard(character) {
   const powers = document.createElement("p");
   powers.textContent = "Powers: " + character.powers;
 
+  const favoriteButton = document.createElement("button");
+  favoriteButton.className = "favorite-button";
+  favoriteButton.textContent = isFavorite(character) ? "★ Favorited" : "☆ Favorite";
+  favoriteButton.addEventListener("click", function () {
+    toggleFavorite(character);
+    renderCards(searchInput.value);
+  });
+
   card.appendChild(name);
   card.appendChild(anime);
   card.appendChild(description);
   card.appendChild(powers);
+  card.appendChild(favoriteButton);
 
   return card;
 }
@@ -69,6 +112,7 @@ function renderCards(searchText) {
   }
 
   const lowerSearchText = searchText.toLowerCase();
+  let matchCount = 0;
 
   animeList.forEach(function (anime) {
     if (anime.name === currentAnimeName) {
@@ -76,10 +120,17 @@ function renderCards(searchText) {
         if (character.name.toLowerCase().includes(lowerSearchText)) {
           const card = createCharacterCard(character);
           cardContainer.appendChild(card);
+          matchCount = matchCount + 1;
         }
       });
     }
   });
+
+  if (matchCount === 0) {
+    const noResultsMessage = document.createElement("p");
+    noResultsMessage.textContent = "No characters found.";
+    cardContainer.appendChild(noResultsMessage);
+  }
 }
 
 narutoButton.addEventListener("click", function () {
